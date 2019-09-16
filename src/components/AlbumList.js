@@ -2,13 +2,17 @@ import React,{Component} from 'react'
 import { View, StyleSheet, ScrollView} from 'react-native'
 import Axios from 'axios';
 import AlbumDetails from './AlbumDetails'
+import Spinner from './Spinner'
 
 class AlbumList extends Component {
-    state = {album:[]};
+    state = {
+        album:[],
+        loading:true
+    };
 
    componentDidMount(){
     Axios.get('https://rallycoding.herokuapp.com/api/music_albums')
-    .then(response => this.setState({album:response.data}));   
+    .then(response => this.setState({album:response.data,loading:false}));   
     
    }
 
@@ -22,7 +26,7 @@ class AlbumList extends Component {
         const {viewStyle,textStyle} = style;
         return (
             <ScrollView>
-               {this.renderAlbum()}
+               {this.state.loading ? <Spinner /> : this.renderAlbum()}               
             </ScrollView>
         )
     }
